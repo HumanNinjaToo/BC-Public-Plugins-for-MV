@@ -22,7 +22,6 @@
  * @help
  * BC_MoveRouteWarning 1.1.0
  * Engine: RPG Maker MV 1.6.1+ (targets 1.6.1 and 1.6.2)
- * Author: HumanNinjaToo
  *
  * Installation: Copy BC_MoveRouteWarning.js to your project's js/plugins
  * folder, then add and enable BC_MoveRouteWarning in the Plugin Manager.

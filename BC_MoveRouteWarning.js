@@ -21,51 +21,43 @@
  *
  * @help
  * BC_MoveRouteWarning 1.1.0
- * Engine: RPG Maker MV 1.6.1+ (targets 1.6.1 and 1.6.2)
+ * Engine: RPG Maker MV 1.6.1+
  *
- * Installation: Copy BC_MoveRouteWarning.js to your project's js/plugins
- * folder, then add and enable BC_MoveRouteWarning in the Plugin Manager.
- * Keep this filename. No dependencies, commands, notetags or extra assets.
+ * Installation:
+ * Copy BC_MoveRouteWarning.js into your project's js/plugins folder,
+ * then enable BC_MoveRouteWarning in the Plugin Manager.
+ * Keep the original filename. No dependencies, plugin commands,
+ * notetags, or additional assets.
  *
- * Reports failed Down, Left, Right, Up, Lower Left, Lower Right, Upper Left
- * and Upper Right, plus Random, Toward Player, Away from Player, Forward
- * and Backward commands (1-13) in forced map-event routes. Uses the engine's
- * movement-success flag after execution; never changes movement behavior.
- * Autonomous routes, players, followers, route Script commands, Wait, Turn,
- * Jump and other commands are not diagnosed.
- * Move Random may skip movement when its chosen direction is blocked;
- * MV leaves success true in that case, so no warning is produced.
- * Toward/Away warn only if the final native attempt fails, after any fallback.
- * When event and player overlap, Toward/Away do nothing and do not warn.
+ * Detection:
+ * Detects failed movement commands (1-13) in forced event movement routes.
+ * Includes directional movement, Random, Toward/Away from Player,
+ * and Forward/Backward movement.
+ * Does not affect movement behavior or monitor autonomous movement,
+ * player movement, or followers.
  *
- * Open the developer console to see warnings:
+ * Console Output:
+ * Open the developer console (F8) during playtesting to see warnings:
  * [BC_MoveRouteWarning] Map 8 | Event 12 (Guard) | Position (15, 9) |
  * Move Right BLOCKED | Route Command 4 | Skip: OFF
- * Route Command is the zero-based engine route-list index.
+ * Route Command identifies the zero-based movement route index.
  *
- * Enable Warnings: temporarily disable all diagnostics.
- * Warn on Skippable Routes: defaults OFF; blocked movement is often
- * intentional when Skip If Cannot Move is enabled.
- * Warning Cooldown: defaults to 60 Graphics frames, per event, command
- * and route position. First failure warns immediately. 0 disables suppression.
- * Replacing a route starts fresh tracking. Expired entries are pruned.
- * Tracking uses weak event references and is not stored in saves; old map
- * events can be collected on transfer, including transfers to the same map.
+ * Configuration:
+ * Enable Warnings: Enables or disables movement diagnostics.
+ * Warn on Skippable Routes: Reports failures even when
+ * Skip If Cannot Move is enabled. Disabled by default.
+ * Warning Cooldown: Minimum frames between repeated warnings.
+ * Default is 60 frames; 0 reports every failure.
  *
- * Playtest only: native test-option detection prevents installing movement
- * instrumentation in deployed games. $gameTemp.isPlaytest() is also checked
- * for each intercepted command. Safe to leave installed for deployment.
+ * Playtest Only:
+ * Diagnostics run only during playtesting and are automatically
+ * disabled in deployed games. Safe to leave installed for deployment.
  *
- * Limitations: Does not identify the collision cause or fix blocked routes.
- * A BLOCKED warning means the native movement command reported failure.
- * It does not mean the event is completely surrounded, permanently stuck,
- * or unable to reach its destination through another route.
- * Move Toward/Away from Player uses basic directional movement, not full
- * pathfinding, so warnings may occur even when another valid route exists.
- * Third-party plugins must preserve processMoveCommand and the native
- * movement-success semantics. Place below plugins aliasing that method.
- * Plugins replacing movement processing may bypass or invalidate detection.
- * No compatibility claim is made for custom movement systems.
+ * Limitations:
+ * A BLOCKED warning indicates a failed movement command,
+ * not necessarily that the event is trapped or unable to reach its target.
+ * The plugin does not identify collision causes or correct movement.
+ * Plugins that modify native movement processing may cause conflicts.
  *
  * Changelog:
  * 1.1.0 - Added diagnostics for commands 9-13.

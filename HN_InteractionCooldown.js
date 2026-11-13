@@ -169,10 +169,14 @@
     var executeCommand = Game_Interpreter.prototype.executeCommand;
     Game_Interpreter.prototype.executeCommand = function executeCommand_ninja() {
         var pending = completions.get(this);
-        // Native executeCommand calls terminate only when no command remains.
-        // Do not classify terminate calls made by a script mid-list as completion.
-        var atEnd = this._list && this._index >= this._list.length &&
-            !this._childInterpreter && !this._waitCount && !this._waitMode;
+        // Detect normal event completion or Exit Event Processing.
+        // Ignore premature termination caused by scripts or other plugins.
+        var command = this.currentCommand();
+        var atEnd = this._list && (
+            this._index >= this._list.length ||
+            (command && command.code === 115)
+        ) && !this._childInterpreter &&    
+            !this._waitCount && !this._waitMode;
         var result = executeCommand.apply(this, arguments);
         if (pending && !this.isRunning()) {
             completions.delete(this);

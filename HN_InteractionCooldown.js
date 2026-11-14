@@ -1,5 +1,5 @@
 /*:
- * @plugindesc v1.1.0 Per-event Action Button interaction cooldowns.
+ * @plugindesc v1.2 Per-event Action Button interaction cooldowns.
  * @author HumanNinjaToo
  *
  * @param Default Cooldown
@@ -28,7 +28,7 @@
  * Engine: RPG Maker MV 1.6.1+
  *
  * Configuration:
- * Add Comments to an event page:
+ * Add these tags to a Comment on the desired event page:
  *   <InteractionCooldown: 60>
  *   <InteractionCooldownMode: Completion>
  *
@@ -50,9 +50,12 @@
  * event is unsupported.
  *
  * Changelog:
- * 1.1.0 - Added Start/Completion modes, Default Cooldown Mode parameter,
+ * 1.2 - Fixed cooldown persistence across event page changes and improved
+ * event completion detection.
+ * 1.1 - Added Start/Completion modes, Default Cooldown Mode parameter,
  * InteractionCooldownMode tag, and completion tracking.
- * 1.0.0 - Initial release.
+ * 1.0 - A wild plugin appeared!
+ *        (ง •̀_•́)ง
  */
 (function HN_InteractionCooldown_ninja() {
     'use strict';
@@ -126,7 +129,7 @@
         if (eligible && (this._hnInteractionDuration_ninja === undefined ||
                 this._hnInteractionMode_ninja === undefined)) readPage_ninja(this);
         var duration = eligible ? this._hnInteractionDuration_ninja : 0;
-        if (duration > 0 && clock_ninja() < (this._hnInteractionUntil_ninja || 0)) return;
+        if (eligible && clock_ninja() < (this._hnInteractionUntil_ninja || 0)) return;
         var wasStarting = this.isStarting();
         var result = start.apply(this, arguments);
         if (eligible && !wasStarting && this.isStarting()) {
